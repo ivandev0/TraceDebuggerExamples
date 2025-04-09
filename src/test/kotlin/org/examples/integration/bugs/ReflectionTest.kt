@@ -5,18 +5,27 @@ import java.lang.reflect.Method
 import java.util.*
 
 class ReflectionTest {
-    fun foo() {}
+    class A(val a: Int) {
+        fun foo() {}
+        private fun bar() {}
+        internal suspend fun baz() {}
+    }
 
     @Test
     fun sortMethods() {
-        val declaredMethods = ReflectionTest::class.java.declaredMethods
-        Arrays.sort(declaredMethods, DEFAULT)
-        assert(declaredMethods.size == 3)
+        val declaredMethods = A::class.java.declaredMethods
+        Arrays.sort(declaredMethods, methodComparator)
+        assert(declaredMethods.size == 4)
     }
 
-    private val DEFAULT: Comparator<Method> = Comparator { m1, m2 ->
-        val i1 = m1.name.hashCode()
-        val i2 = m2.name.hashCode()
-        return@Comparator if (i1 < i2) -1 else 1
+    // Must be kept as an anonymous object to keep the test in Linheck stable.
+    // If converted to lambda, we can have a different name for the function with each run.
+    @Suppress("ObjectLiteralToLambda")
+    private val methodComparator: Comparator<Method> = object : Comparator<Method> {
+        override fun compare(m1: Method, m2: Method): Int {
+            val i1 = m1.name.hashCode()
+            val i2 = m2.name.hashCode()
+            return if (i1 < i2) -1 else 1
+        }
     }
 }

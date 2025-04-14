@@ -6,7 +6,7 @@ import kotlin.test.Test
  * Tests that empty `for` loop is not detected.
  *
  * Expected result:
- * Trace doesn't contain loops.
+ * Trace doesn't contain loops, as nothing was executed inside loop.
  */
 class ZeroIterForLoopRepresentationTest {
     var escape: Any? = null

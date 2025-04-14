@@ -6,7 +6,10 @@ import kotlin.test.Test
  * Tests that loop without events is not detected
  *
  * Expected result:
- * No loop presents in the trace.
+ * This loop doesn't contain any events which \[now\] lincheck reports as trace points
+ * (it could be changed in the future with support for local variables).
+ * Plugin detects loops only by looking of placement of rseported trace points.
+ * As there are no trace points inside the loop, the plugin does not detect the loop.
  */
 class EmptyForLoopRepresentationTest {
     var escape: Any? = null

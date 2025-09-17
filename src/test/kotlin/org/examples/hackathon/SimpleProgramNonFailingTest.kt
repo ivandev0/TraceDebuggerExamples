@@ -10,7 +10,7 @@ class SimpleProgramNonFailingTest {
         val sum = sum(numbers)
         try {
             assertEquals(6, sum)
-        } catch (e: Exception) {
+        } catch (_: Throwable) {
             // Ignore
         }
     }

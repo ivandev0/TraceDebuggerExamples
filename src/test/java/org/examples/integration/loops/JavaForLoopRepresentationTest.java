@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests that Java `for` loop is properly detected
  *
+ * <p>
  * Expected result:
  * Trace contains a loop with 3 iterations.
  */

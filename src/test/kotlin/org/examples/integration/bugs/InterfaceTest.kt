@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package org.examples.integration.bugs
 
 import org.junit.jupiter.api.Test
@@ -6,7 +8,28 @@ interface Interface {
     fun method()
 }
 
-class InterfaceImpl : Interface {
+class InterfaceImpl1 : Interface {
+    private fun f() {}
+    override fun method() {
+        f()
+    }
+}
+
+class InterfaceImpl2 : Interface {
+    private fun f() {}
+    override fun method() {
+        f()
+    }
+}
+
+class InterfaceImpl3 : Interface {
+    private fun f() {}
+    override fun method() {
+        f()
+    }
+}
+
+class InterfaceImpl4 : Interface {
     private fun f() {}
     override fun method() {
         f()
@@ -30,18 +53,17 @@ class MyClassLoader : ClassLoader(classLoader) {
 }
 
 
-const val className = "org.examples.integration.bugs.InterfaceImpl"
-fun getInterface1(): Interface = Class.forName(className).getDeclaredConstructor().newInstance() as Interface
-fun getInterface2(): Interface = classLoader.loadClass(className).getDeclaredConstructor().newInstance() as Interface
-fun getInterface3(): Interface = MyClassLoader().loadClass(className).getDeclaredConstructor().newInstance() as Interface
-fun getInterface4(): Interface = MyClassLoader().loadClass(className, true).getDeclaredConstructor().newInstance() as Interface
+fun getClassName(index: Int) = "org.examples.integration.bugs.InterfaceImpl$index"
+fun getInterface1(): Interface = Class.forName(getClassName(1)).getDeclaredConstructor().newInstance() as Interface
+fun getInterface2(): Interface = classLoader.loadClass(getClassName(2)).getDeclaredConstructor().newInstance() as Interface
+fun getInterface3(): Interface = MyClassLoader().loadClass(getClassName(3)).getDeclaredConstructor().newInstance() as Interface
+fun getInterface4(): Interface = MyClassLoader().loadClass(getClassName(4), true).getDeclaredConstructor().newInstance() as Interface
 
 
 class InterfaceTest {
     /**
-     * Problem: trace sometimes doesn't step from `Interface.method()` into `InterfaceImpl.method()` (and `f()`)
-     * when the impl class is obtained via different class loading paths.
-     * Expected: for i1..i4 show test -> getInterface{N} -> InterfaceImpl.method -> f; class loader must not matter.
+     * Problem: trace recorder doesn't instrument `InterfaceImpl{N}` when it is accessed dynamically via class loading.
+     * Expected: for i1..i4 show test -> getInterface{N} -> InterfaceImpl{N}.method -> f.
      */
     @Test
     fun test() {

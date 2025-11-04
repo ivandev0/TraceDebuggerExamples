@@ -38,6 +38,11 @@ fun getInterface4(): Interface = MyClassLoader().loadClass(className, true).getD
 
 
 class InterfaceTest {
+    /**
+     * Problem: trace sometimes doesn't step from `Interface.method()` into `InterfaceImpl.method()` (and `f()`)
+     * when the impl class is obtained via different class loading paths.
+     * Expected: for i1..i4 show test -> getInterface{N} -> InterfaceImpl.method -> f; class loader must not matter.
+     */
     @Test
     fun test() {
         val i1 = getInterface1()

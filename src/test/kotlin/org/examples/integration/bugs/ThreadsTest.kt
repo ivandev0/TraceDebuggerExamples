@@ -6,8 +6,35 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.atomic.AtomicInteger
+import kotlin.concurrent.thread
+
 
 class ThreadsTest {
+    var field = Any()
+
+    @Test
+    fun daemonThreadTest() {
+        val inc = AtomicInteger(0)
+
+        thread {
+            repeat(100) {
+                if (inc.get() == 10) {
+                    // hang
+                    Thread.sleep(1_000_000_000)
+                }
+                field = "Finish iteration $it"
+                inc.incrementAndGet()
+            }
+        }
+
+        while (inc.get() != 10) {
+            // make sure daemon has enough time to increase `inc` up to 10
+            // so that Main has deterministic iterations count - just one
+            Thread.sleep(100)
+        }
+        field = "Complete Main thread"
+    }
 
     @Test
     fun forkJoinPoolTest() {

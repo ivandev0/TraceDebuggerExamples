@@ -3,3 +3,6 @@ plugins {
 }
 rootProject.name = "TraceDebuggerExamples"
 
+// Include additional modules
+include(":test-kover")
+

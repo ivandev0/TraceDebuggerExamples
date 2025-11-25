@@ -1,13 +1,8 @@
 package org.examples.hackathon
 
-import org.jetbrains.lincheck.test.project.AddressAlreadyExistException
-import org.jetbrains.lincheck.test.project.LoadBalancer
-import org.jetbrains.lincheck.test.project.RoundRobinStrategy
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.util.concurrent.Callable
-import java.util.concurrent.Executors
 import kotlin.concurrent.thread
 
 class LoadBalancerTest {

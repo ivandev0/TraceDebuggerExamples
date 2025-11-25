@@ -1,4 +1,4 @@
-package org.jetbrains.lincheck.test.project
+package org.examples.hackathon
 
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicReference
